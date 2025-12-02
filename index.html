@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Taekwondo Jepara</title>
+
   <link rel="stylesheet" href="style.css" />
 
   <!-- Libraries -->
@@ -12,9 +13,11 @@
 </head>
 <body>
 
+<!-- ================= HEADER ================= -->
 <header>
   <div class="logo">TAEKWONDO JEPARA</div>
 
+  <!-- Hamburger Menu -->
   <div class="menu-toggle" onclick="toggleMenu()">
     <span></span>
     <span></span>
@@ -30,38 +33,57 @@
   </nav>
 </header>
 
+
+<!-- ================= MAIN CONTENT ================= -->
 <main>
+
+  <!-- HOME -->
   <section id="home" class="section">
-    <h1>Selamat Datang di Taekwondo Jepara Championship (PRACADET)</h1>
+    <h1>Selamat Datang di Taekwondo Jepara Championship
+      (CADET)
+    </h1>
     <p>Bergabunglah bersama Taekwondo Jepara Championship.</p>
-    <img src="logo.png" class="banner-img" alt="Logo Taekwondo" />
+    <img src="logo.png" class="banner-img" alt="Logo Taekwondo">
   </section>
 
+  <!-- PENDAFTARAN -->
   <section id="pendaftaran" class="section">
     <h2>Pendaftaran</h2>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLScW6s5uTJ_CpsBwbC2OWsGYhQLo2w-wHPka14b-fG_k6wDGuA/viewform?usp=header">
-      📝 Formulir Pendaftaran
-    </a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScW6s5uTJ_CpsBwbC2OWsGYhQLo2w-wHPka14b-fG_k6wDGuA/viewform?usp=header"
+       target="_blank"
+       class="button">📝 Formulir Pendaftaran</a>
   </section>
 
+  <!-- CETAK -->
   <section id="cetak" class="section">
     <h2>Cetak Bukti Pendaftaran</h2>
-    <input type="text" id="cariNama" class="input-text" placeholder="Masukkan NAMA" />
+
+    <input type="text" id="cariNama"
+           placeholder="Masukkan NAMA"
+           class="input-text" />
+
     <button class="button" onclick="cariDataPdf()">🔍 Cari & Download PDF</button>
+
     <div id="hasilBukti" class="result-box"></div>
   </section>
+
 </main>
 
+
+<!-- ================= FOOTER ================= -->
 <footer>
-  <p>&copy; 2025 Taekwondo Jepara - Created By Abubakar</p>
+  <p>&copy; 2025 Taekwondo Jepara Created By Abubakar</p>
 </footer>
 
 <div id="qr-temp" style="display:none;"></div>
 
+
+<!-- ================= JAVASCRIPT ================= -->
 <script>
 const SHEET_ID = "2PACX-1vTo3muvTsfwaLG5TCiFCiX9y5vbJLeUYrGOs1m0NAH6oXhVUAUwQ6zj4PaDguRp1Y-OBAegrNdhxBcg";
 const SHEET_GID = "1064226839";
 
+// Ambil data dari Google Sheet
 async function ambilDataSheet() {
   const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=${SHEET_GID}&single=true&output=tsv`;
   const res = await fetch(url);
@@ -69,6 +91,7 @@ async function ambilDataSheet() {
   return text.split("\n").map(r => r.split("\t"));
 }
 
+// Generate PDF
 async function generatePDF(row, header, noPendaftaran) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -76,58 +99,67 @@ async function generatePDF(row, header, noPendaftaran) {
   const namaUrl = row[0].replace(/ /g, "_");
   const verifyUrl = `https://taekwondo-jepara.vercel.app/verifikasi?nama=${namaUrl}`;
 
+  // QR Code
   const qrDiv = document.getElementById("qr-temp");
   qrDiv.innerHTML = "";
   new QRCode(qrDiv, { text: verifyUrl, width: 120, height: 120, correctLevel: QRCode.CorrectLevel.H });
   await new Promise(res => setTimeout(res, 250));
   const qrImg = qrDiv.querySelector("img").src;
 
-  doc.setFillColor(20,20,20);
-  doc.rect(0,0,210,32,"F");
+  // Header PDF
+  doc.setFillColor(20, 20, 20);
+  doc.rect(0, 0, 210, 32, "F");
   doc.setFontSize(18);
-  doc.setTextColor(241,196,15);
-  doc.text("BUKTI PENDAFTARAN",105,12,{align:"center"});
+  doc.setTextColor(241, 196, 15);
+  doc.text("BUKTI PENDAFTARAN", 105, 12, { align: "center" });
   doc.setFontSize(11);
-  doc.text("TAEKWONDO JEPARA",105,22,{align:"center"});
+  doc.text("TAEKWONDO JEPARA", 105, 22, { align: "center" });
 
-  doc.setDrawColor(241,196,15);
+  // Garis
+  doc.setDrawColor(241, 196, 15);
   doc.setLineWidth(1.2);
-  doc.line(15,38,195,38);
+  doc.line(15, 38, 195, 38);
 
   let y = 52;
-  doc.setFontSize(12);
-  doc.setFont(undefined,"bold");
-  doc.text("Nomor Pendaftaran",20,y);
-  y += 7;
 
-  doc.setFont(undefined,"normal");
-  doc.text(noPendaftaran,25,y);
+  // Nomor Pendaftaran
+  doc.setFont(undefined, "bold");
+  doc.setFontSize(12);
+  doc.setTextColor(0);
+  doc.text("Nomor Pendaftaran", 20, y);
+  y += 7;
+  doc.setFont(undefined, "normal");
+  doc.text(noPendaftaran, 25, y);
   y += 10;
 
+  // Pertanyaan -> Jawaban
   for (let i = 0; i < header.length; i++) {
-    doc.setFont(undefined,"bold");
-    doc.text(header[i],20,y);
+    doc.setFont(undefined, "bold");
+    doc.text(header[i], 20, y);
     y += 7;
-    doc.setFont(undefined,"normal");
-    doc.text(row[i],25,y);
+    doc.setFont(undefined, "normal");
+    doc.text(row[i], 25, y);
     y += 10;
   }
 
-  doc.addImage(qrImg,"PNG",160,245,35,35);
+  // QR
+  doc.addImage(qrImg, "PNG", 160, 245, 35, 35);
   doc.setFontSize(8);
-  doc.text("Pendaftaran Sukses",160,244);
+  doc.text("Pendaftaran Sukses", 160, 244);
 
+  // Footer PDF
   doc.setFontSize(9);
   doc.setTextColor(100);
-  doc.text("Dicetak otomatis oleh sistem Taekwondo Jepara",105,290,{align:"center"});
+  doc.text("Dicetak otomatis oleh sistem Taekwondo Jepara", 105, 290, { align: "center" });
 
   return doc;
 }
 
+
+// Cari & Generate PDF
 async function cariDataPdf() {
   const keyword = document.getElementById("cariNama").value.toLowerCase().trim();
   const box = document.getElementById("hasilBukti");
-
   if (!keyword) return alert("Masukkan NAMA!");
 
   const data = await ambilDataSheet();
@@ -143,6 +175,7 @@ async function cariDataPdf() {
   const match = list[index];
   const noPendaftaran = String(index + 1).padStart(3, "0");
 
+  // Tampilkan
   let html = `<h3>Data Ditemukan</h3>
               <p><b>Nomor Pendaftaran:</b> ${noPendaftaran}</p>`;
   for (let i = 0; i < header.length; i++) {
@@ -151,22 +184,12 @@ async function cariDataPdf() {
   box.innerHTML = html;
 
   const pdf = await generatePDF(match, header, noPendaftaran);
-
-  const pdfBlob = pdf.output("blob");
-  const blobUrl = URL.createObjectURL(pdfBlob);
-
-  const link = document.createElement("a");
-  link.href = blobUrl;
-  link.download = `Bukti_Pendaftaran_${noPendaftaran}_${match[0].replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
-  document.body.appendChild(link);
-  link.click();
-
-  setTimeout(() => {
-    URL.revokeObjectURL(blobUrl);
-    link.remove();
-  }, 500);
+  const fileName = match[0].replace(/[^a-zA-Z0-9]/g, "_");
+  pdf.save(`Bukti_Pendaftaran_${noPendaftaran}_${fileName}.pdf`);
 }
 
+
+// Toggle menu mobile
 function toggleMenu() {
   document.getElementById("menuList").classList.toggle("show");
 }
@@ -174,3 +197,6 @@ function toggleMenu() {
 
 </body>
 </html>
+
+
+
