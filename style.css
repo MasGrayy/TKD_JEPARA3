@@ -1,217 +1,151 @@
-/* ========== RESET ========== */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-
-:root {
-  --bg-1: #0b0b0b;
-  --bg-2: #141414;
-  --accent: #d4a017;
-  --accent-2: #ffd463;
-  --muted: #e6e6e6;
-  --card: #1a1a1a;
-  --glass: rgba(255, 215, 0, 0.06);
-  --radius: 16px;
-  --max-width: 1100px;
-}
-
-/* ========== BODY ========== */
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Poppins', system-ui, sans-serif;
-  background: linear-gradient(160deg, var(--bg-1), #151515 60%, var(--bg-1));
-  color: var(--muted);
-  line-height: 1.6;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(160deg, #0b0b0b, #151515 60%, #0b0b0b);
+  color: #e6e6e6;
   padding: 18px;
 }
 
-
-/* ========== HEADER BARU ========== */
+/* HEADER */
 header {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 8px auto 20px;
+  max-width: 1100px;
+  margin: 10px auto;
   padding: 16px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  background: rgba(20, 20, 20, 0.65);
+  background: rgba(20,20,20,0.65);
   backdrop-filter: blur(14px);
-
   border-radius: 16px;
   border: 1px solid rgba(212,160,23,0.25);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.55);
-
-  position: sticky;
-  top: 10px;
-  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
-  font-size: clamp(20px, 3vw, 32px);
+  font-size: 28px;
   font-weight: 900;
-  color: var(--accent-2);
+  color: #ffd463;
   letter-spacing: 3px;
   text-shadow: 0 0 12px rgba(255,215,0,0.5);
 }
 
-/* NAVIGATION */
-nav ul {
-  display: flex;
-  gap: 28px;
-  list-style: none;
-  align-items: center;
-}
-
+/* NAV */
+nav ul { display: flex; gap: 26px; list-style: none; }
 nav a {
-  position: relative;
-  color: var(--accent);
+  color: #d4a017;
   text-decoration: none;
   font-weight: 700;
-  padding: 8px 4px;
-  transition: 0.3s;
+  position: relative;
 }
+nav a:hover { color: #fff; }
 
-nav a:hover {
-  color: #fff;
-}
-
-/* underline animasi */
 nav a::after {
   content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
-  height: 3px;
   width: 0%;
-  background: var(--accent-2);
-  border-radius: 6px;
-  transition: 0.3s ease;
-  box-shadow: 0 0 10px rgba(255,215,0,0.6);
-}
-
-nav a:hover::after {
-  width: 100%;
-}
-
-
-/* ========== HAMBURGER MENU ========== */
-.menu-toggle {
-  width: 36px;
-  height: 26px;
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.menu-toggle span {
-  display: block;
-  width: 100%;
-  height: 4px;
-  background: var(--accent-2);
-  border-radius: 4px;
+  height: 3px;
+  background: #ffd463;
   transition: 0.3s;
 }
+nav a:hover::after { width: 100%; }
 
+/* MOBILE MENU */
+.menu-toggle { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
+.menu-toggle span {
+  width: 32px; height: 4px; background: #ffd463; border-radius: 4px;
+}
 
-/* ========== RESPONSIVE NAV ========== */
 @media (max-width: 720px) {
+  .menu-toggle { display: flex; }
 
   nav ul {
     position: absolute;
-    top: 80px;
     right: 20px;
-    flex-direction: column;
-
-    background: rgba(0,0,0,0.85);
+    top: 80px;
+    background: rgba(0,0,0,0.9);
     padding: 20px;
-
-    border-radius: 14px;
-    width: 180px;
+    border-radius: 10px;
+    flex-direction: column;
     display: none;
   }
 
-  nav ul.show {
-    display: flex;
-  }
-
-  .menu-toggle {
-    display: flex;
-  }
+  nav ul.show { display: flex; }
 }
 
-
-/* ========== SECTIONS ========== */
-main {
-  max-width: var(--max-width);
-  margin: 18px auto;
-}
-
+/* MAIN SECTION */
 .section {
-  background: var(--bg-2);
-  margin: 18px 0;
-  padding: 28px;
-  border-left: 6px solid var(--accent);
-  border-radius: var(--radius);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  background: #141414;
+  margin: 20px auto;
+  padding: 30px;
+  border-left: 6px solid #d4a017;
+  border-radius: 16px;
+  max-width: 1100px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
-.section h1,
-.section h2 {
-  margin-bottom: 12px;
-}
-
-.section h1 {
-  font-size: clamp(20px, 4.2vw, 42px);
-  text-align: center;
-}
-
-.section h2 {
-  font-size: clamp(18px, 3.2vw, 30px);
-  color: var(--accent-2);
-}
+.home-section { text-align: center; }
 
 .banner-img {
+  width: min(380px, 85%);
+  margin: 18px auto;
   display: block;
-  width: min(380px, 80%);
-  margin: 12px auto;
+  animation: fadeIn 0.8s;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-/* ========== FORM & BUTTON ========== */
+/* BUTTONS */
 .button {
-  display: inline-block;
-  padding: 12px 20px;
+  padding: 12px 22px;
   border-radius: 999px;
   font-weight: 800;
   cursor: pointer;
-  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  display: inline-block;
+  border: none;
+  transition: 0.25s;
 }
 
-.input-text {
-  width: 60%;
-  padding: 12px;
-  border-radius: 12px;
+.btn-golden {
+  background: linear-gradient(135deg, #ffd463, #d4a017);
+  color: #000;
+}
+
+.btn-dark {
   background: #111;
-  border: 2px solid rgba(212,160,23,0.18);
-  color: var(--muted);
+  color: #ffd463;
+  border: 2px solid #d4a017;
 }
 
+.button:hover { transform: scale(1.05); }
 
-/* ========== HASIL PENCARIAN ========== */
+/* INPUT */
+.input-text {
+  width: 70%;
+  padding: 12px;
+  background: #111;
+  border: 2px solid rgba(212,160,23,0.25);
+  border-radius: 12px;
+  color: #eee;
+  margin-top: 12px;
+}
+
+/* RESULT BOX */
 .result-box {
-  margin-top: 18px;
-  padding: 16px;
-  background: var(--card);
-  border-left: 6px solid var(--accent);
-  border-radius: 10px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  margin-top: 20px;
+  padding: 20px;
+  background: #1a1a1a;
+  border-left: 6px solid #ffd463;
+  border-radius: 12px;
 }
 
-
-/* ========== FOOTER ========== */
+/* FOOTER */
 footer {
   text-align: center;
-  padding: 18px;
-  color: var(--accent);
+  margin-top: 20px;
+  color: #ffd463;
 }
